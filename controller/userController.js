@@ -1,22 +1,36 @@
 import { User } from "../Models/index.js";
 import { generateToken } from "../utils/token.js";
+import UserApi from "../Api/userApi.js";
 
 class UserController {
-    constructor() {}
-    getAllUsers = (req, res) => {
-      res.send("Users");
+    constructor() {
+      this.userApi = new UserApi()
+    }
+
+    getAllUsers = async (req, res) => {
+      try {
+        const user = await User.findAll({ attributes: ["Id", "Nombre"] });
+        res.status(200).send({
+          success: true,
+          message: "Todos los usuarios que hay",
+          data: user,
+        });
+      } catch (error) {
+        res.status(400).send({ success: false, message: error.message });
+      }
     };
+
     getUserById = async (req, res) => {
       try {
         const { id } = req.params;
-        const user = await User.findOne({
-          where: { id },
-          attributes: ["id", "Nombre"],
-        //   include: [{ model: Role, attributes: ["name"] }],
-        });
+        // const user = await User.findOne({
+        //   where: { id },
+        //   attributes: ["id", "Nombre"],
+        // //   include: [{ model: Role, attributes: ["name"] }],
+        // });
+        // if (!user) throw new Error("no hay User");
 
-        if (!user) throw new Error("no hay User");
-
+        const user = await this.userApi.getUserById(id)
         res.status(200).send({
           success: true,
           message: "Usuario encontrado",
@@ -85,9 +99,39 @@ class UserController {
     };
 
     // -----------------
+    updateUser = async (req, res) => {
+      try {
+        const { Nombre } = req.body;
+        const { Id } = req.params;
+        const user = await User.update(
+          { Nombre },
+          {
+            where: { Id },
+          }
+        );
+        if (user[0] === 0) throw new Error("no se modifico nada");
+        res
+          .status(200)
+          .send({ success: true, message: "Usuario modificado", data: user });
+      } catch (error) {
+        res.status(400).send({ success: false, message: error.message });
+      }
+    };
 
-    deleteUser = (req, res) => {
-      res.send("Users delete");
+    deleteUser = async (req, res) => {
+      try {
+        const { id } = req.params;
+        const user = await User.destroy({
+          where: { id },
+        });
+
+        if (!user) throw new Error("No se pudo eliminar");
+        res
+          .status(200)
+          .send({ success: true, message: "Usuario eliminado", data: user });
+      } catch (error) {
+        res.status(400).send({ success: false, message: error.message });
+      }
     };
   }
 

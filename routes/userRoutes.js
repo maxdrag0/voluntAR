@@ -14,7 +14,7 @@ usersRoutes.get("/me",validatetoken, userController.me);
 usersRoutes.get("", userController.getAllUsers);
 usersRoutes.get("/:id", userController.getUserById);
 
-// usersRoutes.put("/:id", userController.updateUser);
+usersRoutes.put("/:id", userController.updateUser);
 
 usersRoutes.delete("/:id", userController.deleteUser);
 

@@ -3,10 +3,18 @@ import { TipoUsuario } from "../Models/index.js";
 class TipoUsuarioController {
     constructor() {}
 
-    getAllTipoUsuario = (req, res) => {
-      res.send("Todas los tipos de usuario");
+    getAllTipoUsuario = async (req, res) => {
+      try {
+        const tipoUsuario = await TipoUsuario.findAll({ attributes: ["Id", "Nombre"] });
+        res.status(200).send({
+          success: true,
+          message: "Todos los tipo de usuario",
+          data: tipoUsuario,
+        });
+      } catch (error) {
+        res.status(400).send({ success: false, message: error.message });
+      }
     };
-
     // ------------------
     createTipoUsuario = async (req, res) => {
       try {
@@ -27,8 +35,20 @@ class TipoUsuarioController {
 
     // -----------------
 
-    deleteTipoUsuario = (req, res) => {
-      res.send("Tipo de usuario eliminado");
+    deleteTipoUsuario = async (req, res) => {
+      try {
+        const { id } = req.params;
+        const tipoUsuario = await TipoUsuario.destroy({
+          where: { id },
+        });
+
+        if (!tipoUsuario ) throw new Error("No se pudo eliminar el tipo de usuario");
+        res
+          .status(200)
+          .send({ success: true, message: "Tipo de usuario eliminada", data: tipoUsuario });
+      } catch (error) {
+        res.status(400).send({ success: false, message: error.message });
+      }
     };
   }
 

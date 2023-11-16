@@ -3,8 +3,17 @@ import { TipoSolicitud } from "../Models/index.js";
 class TipoSolicitudController {
     constructor() {}
 
-    getAllTipoSolicitudes = (req, res) => {
-      res.send("Todas los tipos de solicitudes");
+    getAllTipoSolicitudes = async (req, res) => {
+      try {
+        const tipoSolicitud = await TipoSolicitud.findAll({ attributes: ["Id", "Nombre"] });
+        res.status(200).send({
+          success: true,
+          message: "Todos los tipo de solicitudes",
+          data: tipoSolicitud,
+        });
+      } catch (error) {
+        res.status(400).send({ success: false, message: error.message });
+      }
     };
 
     // ------------------
@@ -27,8 +36,20 @@ class TipoSolicitudController {
 
     // -----------------
 
-    deleteTipoSolicitud = (req, res) => {
-      res.send("Tipo de solicitud eliminado");
+    deleteTipoSolicitud = async (req, res) => {
+      try {
+        const { id } = req.params;
+        const tipoSolicitud = await TipoSolicitud.destroy({
+          where: { id },
+        });
+
+        if (!tipoSolicitud ) throw new Error("No se pudo eliminar el tipo de solicitud");
+        res
+          .status(200)
+          .send({ success: true, message: "Tipo de solicitud eliminada", data: tipoSolicitud });
+      } catch (error) {
+        res.status(400).send({ success: false, message: error.message });
+      }
     };
   }
 

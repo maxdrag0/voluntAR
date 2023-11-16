@@ -3,8 +3,17 @@ import { Solicitud } from "../Models/index.js";
 class SolicitudController {
     constructor() {}
 
-    getAllSolicitudes = (req, res) => {
-      res.send("Todas las solicitudes");
+    getAllSolicitudes = async (req, res) => {
+      try {
+        const solicitud = await Solicitud.findAll({ attributes: ["Id", "Asunto"] });
+        res.status(200).send({
+          success: true,
+          message: "Todos las solicitudes",
+          data: solicitud,
+        });
+      } catch (error) {
+        res.status(400).send({ success: false, message: error.message });
+      }
     };
 
     // ------------------
@@ -32,8 +41,20 @@ class SolicitudController {
 
     // -----------------
 
-    deleteSolicitud = (req, res) => {
-      res.send("Solicitud eliminada");
+    deleteSolicitud = async (req, res) => {
+      try {
+        const { id } = req.params;
+        const solicitud = await Solicitud.destroy({
+          where: { id },
+        });
+
+        if (!solicitud ) throw new Error("No se pudo eliminar la solicitud");
+        res
+          .status(200)
+          .send({ success: true, message: "Solicitud eliminada", data: solicitud });
+      } catch (error) {
+        res.status(400).send({ success: false, message: error.message });
+      }
     };
   }
 
