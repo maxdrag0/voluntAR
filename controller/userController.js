@@ -9,7 +9,8 @@ class UserController {
 
     getAllUsers = async (req, res) => {
       try {
-        const user = await User.findAll({ attributes: ["Id", "Nombre"] });
+        // const user = await User.findAll({ attributes: ["Id", "Nombre"] });
+        const user = await this.userApi.getAllUser();
         res.status(200).send({
           success: true,
           message: "Todos los usuarios que hay",
@@ -44,14 +45,16 @@ class UserController {
     createUser = async (req, res) => {
       try {
         const { Nombre, Apellido, Direccion, Email, TipoUsuario, Contraseña } = req.body;
-        const user = await User.create({
-          Nombre,
-          Apellido,
-          Direccion,
-          Email,
-          TipoUsuario,
-          Contraseña,
-        });
+        // const user = await User.create({
+        //   Nombre,
+        //   Apellido,
+        //   Direccion,
+        //   Email,
+        //   TipoUsuario,
+        //   Contraseña,
+        // });
+        const user = await this.userApi.createUser(Nombre, Apellido, Direccion, Email, TipoUsuario, Contraseña);
+
         res.status(200).send({
           success: true,
           message: "Usuario creado con exito",
@@ -65,20 +68,20 @@ class UserController {
     login = async (req, res) => {
       try {
         const { Email, Contraseña } = req.body;
-        const user = await User.findOne({
-          where: { Email },
-        });
-        if (!user) throw new Error("Usuario incorrecto");
+        // const user = await User.findOne({
+        //   where: { Email },
+        // });
+        // if (!user) throw new Error("Usuario incorrecto");
 
-        const validate = await user.validatePassword(Contraseña);
-        if (!validate) throw new Error("Contraseña erronea");
+        // const validate = await user.validatePassword(Contraseña);
+        // if (!validate) throw new Error("Contraseña erronea");
 
-        const payload = {
-          id: user.id,
-          Nombre: user.Nombre,
-        //   role: user.roleId,
-        };
-        console.log(`🚀 ~ UserController ~ login= ~ payload:`, payload);
+        // const payload = {
+        //   id: user.id,
+        //   Nombre: user.Nombre,
+        // };
+        // console.log(`🚀 ~ UserController ~ login= ~ payload:`, payload);
+        const user = await this.userApi.login(Email, Contraseña)
 
         const token = generateToken(payload);
         res.cookie("token", token);
@@ -103,13 +106,14 @@ class UserController {
       try {
         const { Nombre } = req.body;
         const { Id } = req.params;
-        const user = await User.update(
-          { Nombre },
-          {
-            where: { Id },
-          }
-        );
-        if (user[0] === 0) throw new Error("no se modifico nada");
+        // const user = await User.update(
+        //   { Nombre },
+        //   {
+        //     where: { Id },
+        //   }
+        // );
+        // if (user[0] === 0) throw new Error("no se modifico nada");
+        const user = await this.userApi.updateUser(Nombre, Id);
         res
           .status(200)
           .send({ success: true, message: "Usuario modificado", data: user });
@@ -121,11 +125,12 @@ class UserController {
     deleteUser = async (req, res) => {
       try {
         const { id } = req.params;
-        const user = await User.destroy({
-          where: { id },
-        });
+        // const user = await User.destroy({
+        //   where: { id },
+        // });
 
-        if (!user) throw new Error("No se pudo eliminar");
+        // if (!user) throw new Error("No se pudo eliminar");
+        const user = await this.userApi.deleteUser(id)
         res
           .status(200)
           .send({ success: true, message: "Usuario eliminado", data: user });

@@ -1,11 +1,14 @@
 import { TipoUsuario } from "../Models/index.js";
+import TipoUsuarioApi from "../Api/tipoUsuarioApi.js";
 
 class TipoUsuarioController {
-    constructor() {}
+    constructor() {
+      this.TipoUsuarioApi = new TipoUsuarioApi()
+    }
 
     getAllTipoUsuario = async (req, res) => {
       try {
-        const tipoUsuario = await TipoUsuario.findAll({ attributes: ["Id", "Nombre"] });
+        const tipoUsuario = await this.TipoUsuarioApi.getAllTipoUsuario()
         res.status(200).send({
           success: true,
           message: "Todos los tipo de usuario",
@@ -19,9 +22,7 @@ class TipoUsuarioController {
     createTipoUsuario = async (req, res) => {
       try {
         const { Nombre } = req.body;
-        const tipoUsuario = await TipoUsuario.create({
-            Nombre,
-        });
+        const tipoUsuario = await this.TipoUsuarioApi.createTipoUsuario(Nombre);
         res.status(200).send({
           success: true,
           message: "Tipo de usuario creado con exito",
@@ -32,17 +33,25 @@ class TipoUsuarioController {
       }
     };
 
+    updateTipoUsuario = async (req, res) => {
+      try {
+        const { Nombre } = req.body;
+        const { Id } = req.params;
+        const tipoUsuario = await this.TipoUsuarioApi.updateTipoUsuario(Nombre,Id)
+        res
+          .status(200)
+          .send({ success: true, message: "Tipo de usuario modificado", data: tipoUsuario });
+      } catch (error) {
+        res.status(400).send({ success: false, message: error.message });
+      }
+    };
 
     // -----------------
 
     deleteTipoUsuario = async (req, res) => {
       try {
         const { id } = req.params;
-        const tipoUsuario = await TipoUsuario.destroy({
-          where: { id },
-        });
-
-        if (!tipoUsuario ) throw new Error("No se pudo eliminar el tipo de usuario");
+        const tipoUsuario = await this.TipoUsuarioApi.deleteTipoUsuarioApi(id);
         res
           .status(200)
           .send({ success: true, message: "Tipo de usuario eliminada", data: tipoUsuario });
