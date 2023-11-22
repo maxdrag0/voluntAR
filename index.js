@@ -16,5 +16,5 @@ app.use("/api", router);
 await connection.sync({ force: false });
 
 app.listen(SERVER_PORT, () => {
-  console.log(`🚀 ~ app.listen ~ listen: http://localhost:${SERVER_PORT}`);
+  console.log(`listen: http://localhost:${SERVER_PORT}`);
 });
