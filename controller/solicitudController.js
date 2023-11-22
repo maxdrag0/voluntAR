@@ -1,4 +1,3 @@
-import { Solicitud } from "../Models/index.js";
 import SolicitudApi from "../Api/solicitudApi.js";
 
 class SolicitudController {

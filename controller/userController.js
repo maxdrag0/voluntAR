@@ -1,4 +1,3 @@
-import { User } from "../Models/index.js";
 import { generateToken } from "../utils/token.js";
 import UserApi from "../Api/userApi.js";
 

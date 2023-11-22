@@ -1,4 +1,3 @@
-import { TipoSolicitud } from "../Models/index.js";
 import TipoSolicitudApi from "../Api/tipoSolicitudApi.js";
 
 class TipoSolicitudController {
