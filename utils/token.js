@@ -8,6 +8,6 @@ export const generateToken = (payload) => {
   return token;
 };
 
-export const verifyToken =(token) => {
+export const verifyToken = (token) => {
   return jwt.verify(token, SECRET);
 };

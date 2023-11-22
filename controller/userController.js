@@ -2,141 +2,149 @@ import { generateToken } from "../utils/token.js";
 import UserApi from "../Api/userApi.js";
 
 class UserController {
-    constructor() {
-      this.userApi = new UserApi()
-    }
-
-    getAllUsers = async (req, res) => {
-      try {
-        // const user = await User.findAll({ attributes: ["Id", "Nombre"] });
-        const user = await this.userApi.getAllUser();
-        res.status(200).send({
-          success: true,
-          message: "Todos los usuarios que hay",
-          data: user,
-        });
-      } catch (error) {
-        res.status(400).send({ success: false, message: error.message });
-      }
-    };
-
-    getUserById = async (req, res) => {
-      try {
-        const { id } = req.params;
-        // const user = await User.findOne({
-        //   where: { id },
-        //   attributes: ["id", "Nombre"],
-        // //   include: [{ model: Role, attributes: ["name"] }],
-        // });
-        // if (!user) throw new Error("no hay User");
-
-        const user = await this.userApi.getUserById(id)
-        res.status(200).send({
-          success: true,
-          message: "Usuario encontrado",
-          data: user,
-        });
-      } catch (error) {
-        res.status(400).send({ success: false, message: error.message });
-      }
-    };
-    // ------------------
-    createUser = async (req, res) => {
-      try {
-        const { Nombre, Apellido, Direccion, Email, TipoUsuario, Contraseña } = req.body;
-        // const user = await User.create({
-        //   Nombre,
-        //   Apellido,
-        //   Direccion,
-        //   Email,
-        //   TipoUsuario,
-        //   Contraseña,
-        // });
-        const user = await this.userApi.createUser(Nombre, Apellido, Direccion, Email, TipoUsuario, Contraseña);
-
-        res.status(200).send({
-          success: true,
-          message: "Usuario creado con exito",
-          data: user,
-        });
-      } catch (error) {
-        res.status(400).send({ success: false, message: error.message });
-      }
-    };
-
-    login = async (req, res) => {
-      try {
-        const { Email, Contraseña } = req.body;
-        // const user = await User.findOne({
-        //   where: { Email },
-        // });
-        // if (!user) throw new Error("Usuario incorrecto");
-
-        // const validate = await user.validatePassword(Contraseña);
-        // if (!validate) throw new Error("Contraseña erronea");
-
-        // const payload = {
-        //   id: user.id,
-        //   Nombre: user.Nombre,
-        // };
-        // console.log(`🚀 ~ UserController ~ login= ~ payload:`, payload);
-        const user = await this.userApi.login(Email, Contraseña)
-
-        const token = generateToken(payload);
-        res.cookie("token", token);
-
-        res.status(200).send({ success: true, message: "usuario logeado" });
-      } catch (error) {
-        res.status(400).send({ success: false, message: error.message });
-      }
-    };
-
-    me = async (req, res) => {
-      console.log(`🚀 ~ UserController ~ me= ~ req:`, req.user)
-      try {
-        res.status(200).send({ success: true, message: "usuario me" });
-      } catch (error) {
-        res.status(400).send({ success: false, message: error.message });
-      }
-    };
-
-    // -----------------
-    updateUser = async (req, res) => {
-      try {
-        const { Nombre } = req.body;
-        const { Id } = req.params;
-        // const user = await User.update(
-        //   { Nombre },
-        //   {
-        //     where: { Id },
-        //   }
-        // );
-        // if (user[0] === 0) throw new Error("no se modifico nada");
-        const user = await this.userApi.updateUser(Nombre, Id);
-        res
-          .status(200)
-          .send({ success: true, message: "Usuario modificado", data: user });
-      } catch (error) {
-        res.status(400).send({ success: false, message: error.message });
-      }
-    };
-
-    deleteUser = async (req, res) => {
-      try {
-        const { id } = req.params;
-        // const user = await User.destroy({
-        //   where: { id },
-        // });
-
-        // if (!user) throw new Error("No se pudo eliminar");
-        const user = await this.userApi.deleteUser(id)
-        res
-          .status(200)
-          .send({ success: true, message: "Usuario eliminado", data: user });
-      } catch (error) {
-        res.status(400).send({ success: false, message: error.message });
-      }
-    };
+  constructor() {
+    this.userApi = new UserApi();
   }
 
-  export default UserController;
+  getAllUsers = async (req, res) => {
+    try {
+      // const user = await User.findAll({ attributes: ["Id", "Nombre"] });
+      const user = await this.userApi.getAllUser();
+      res.status(200).send({
+        success: true,
+        message: "Todos los usuarios que hay",
+        data: user,
+      });
+    } catch (error) {
+      res.status(400).send({ success: false, message: error.message });
+    }
+  };
+
+  getUserById = async (req, res) => {
+    try {
+      const { id } = req.params;
+      // const user = await User.findOne({
+      //   where: { id },
+      //   attributes: ["id", "Nombre"],
+      // //   include: [{ model: Role, attributes: ["name"] }],
+      // });
+      // if (!user) throw new Error("no hay User");
+
+      const user = await this.userApi.getUserById(id);
+      res.status(200).send({
+        success: true,
+        message: "Usuario encontrado",
+        data: user,
+      });
+    } catch (error) {
+      res.status(400).send({ success: false, message: error.message });
+    }
+  };
+  // ------------------
+  createUser = async (req, res) => {
+    try {
+      const { Nombre, Apellido, Direccion, Email, TipoUsuario, Contraseña } =
+        req.body;
+      // const user = await User.create({
+      //   Nombre,
+      //   Apellido,
+      //   Direccion,
+      //   Email,
+      //   TipoUsuario,
+      //   Contraseña,
+      // });
+      const user = await this.userApi.createUser(
+        Nombre,
+        Apellido,
+        Direccion,
+        Email,
+        TipoUsuario,
+        Contraseña
+      );
+
+      res.status(200).send({
+        success: true,
+        message: "Usuario creado con exito",
+        data: user,
+      });
+    } catch (error) {
+      res.status(400).send({ success: false, message: error.message });
+    }
+  };
+
+  login = async (req, res) => {
+    try {
+      const { Email, Contraseña } = req.body;
+      // const user = await User.findOne({
+      //   where: { Email },
+      // });
+      // if (!user) throw new Error("Usuario incorrecto");
+
+      // const validate = await user.validatePassword(Contraseña);
+      // if (!validate) throw new Error("Contraseña erronea");
+
+      // const payload = {
+      //   id: user.id,
+      //   Nombre: user.Nombre,
+      // };
+      // console.log(`🚀 ~ UserController ~ login= ~ payload:`, payload);
+      const user = await this.userApi.login(Email, Contraseña);
+
+      const token = generateToken(payload);
+      res.cookie("token", token);
+
+      res.status(200).send({ success: true, message: "usuario logeado" });
+    } catch (error) {
+      res.status(400).send({ success: false, message: error.message });
+    }
+  };
+
+  me = async (req, res) => {
+    console.log(`🚀 ~ UserController ~ me= ~ req:`, req.user);
+    try {
+      res.status(200).send({ success: true, message: "usuario me" });
+    } catch (error) {
+      res.status(400).send({ success: false, message: error.message });
+    }
+  };
+
+  // -----------------
+  updateUser = async (req, res) => {
+    try {
+      const { Nombre } = req.body;
+      const { Id } = req.params;
+      // const user = await User.update(
+      //   { Nombre },
+      //   {
+      //     where: { Id },
+      //   }
+      // );
+      // if (user[0] === 0) throw new Error("no se modifico nada");
+      const user = await this.userApi.updateUser(Nombre, Id);
+      res
+        .status(200)
+        .send({ success: true, message: "Usuario modificado", data: user });
+    } catch (error) {
+      res.status(400).send({ success: false, message: error.message });
+    }
+  };
+
+  deleteUser = async (req, res) => {
+    try {
+      const { id } = req.params;
+      // const user = await User.destroy({
+      //   where: { id },
+      // });
+
+      // if (!user) throw new Error("No se pudo eliminar");
+      const user = await this.userApi.deleteUser(id);
+      res
+        .status(200)
+        .send({ success: true, message: "Usuario eliminado", data: user });
+    } catch (error) {
+      res.status(400).send({ success: false, message: error.message });
+    }
+  };
+}
+
+export default UserController;

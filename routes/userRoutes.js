@@ -8,9 +8,9 @@ const userController = new UserController();
 usersRoutes.post("", userController.createUser);
 usersRoutes.post("/login", userController.login);
 
-usersRoutes.use(validatetoken)
+usersRoutes.use(validatetoken);
 
-usersRoutes.get("/me",validatetoken, userController.me);
+usersRoutes.get("/me", validatetoken, userController.me);
 usersRoutes.get("", userController.getAllUsers);
 usersRoutes.get("/:id", userController.getUserById);
 

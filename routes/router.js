@@ -4,11 +4,11 @@ import solicitudRoutes from "./solicitudRoutes.js";
 import tipoSolicitudRoutes from "./tipoSolicitudRoutes.js";
 import tipoUsuarioRoutes from "./tipoUsuarioRoutes.js";
 
-const router=Router()
+const router = Router();
 
-router.use("/users",userRoutes)
-router.use("/solicitudes",solicitudRoutes)
-router.use("/tipoSolicitudes",tipoSolicitudRoutes)
-router.use("/tipoUsuarios",tipoUsuarioRoutes)
+router.use("/users", userRoutes);
+router.use("/solicitudes", solicitudRoutes);
+router.use("/tipoSolicitudes", tipoSolicitudRoutes);
+router.use("/tipoUsuarios", tipoUsuarioRoutes);
 
-export default router
+export default router;
