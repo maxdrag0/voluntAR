@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize";
-import { DATABASE_NAME, PORT, DIALECT, HOST } from "../config/config.js";
+import { DATABASE_NAME, USERNAME, PORT, DIALECT, HOST } from "../config/config.js";
 
 const database = DATABASE_NAME;
 const username = "root";

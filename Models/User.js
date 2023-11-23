@@ -14,10 +14,6 @@ User.init(
     Nombre: {
       type: DT.STRING(50),
       allowNull: false,
-
-      set(value) {
-        this.setDataValue("name", value.toUpperCase());
-      },
     },
     Apellido: {
       type: DT.STRING(50),
